@@ -10,20 +10,14 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 public abstract class ExtDirectServlet extends HttpServlet {
-	private final Gson gson;
 	private final JavascriptApiBuilder javascriptApiBuilder;
 	private final DirectRequestProcessor directRequestProcessor;
 
 	protected ExtDirectServlet() {
-		this(new Gson());
+		this(new JavascriptApiBuilder(new DirectMethodFinder()), new DirectRequestProcessor(new DirectMethodFinder()));
 	}
 
-	protected ExtDirectServlet(Gson gson) {
-		this(gson, new JavascriptApiBuilder(gson, new DirectMethodFinder()), new DirectRequestProcessor(new DirectMethodFinder(), gson));
-	}
-
-	protected ExtDirectServlet(Gson gson, JavascriptApiBuilder javascriptApiBuilder, DirectRequestProcessor directRequestProcessor) {
-		this.gson = gson;
+	protected ExtDirectServlet(JavascriptApiBuilder javascriptApiBuilder, DirectRequestProcessor directRequestProcessor) {
 		this.javascriptApiBuilder = javascriptApiBuilder;
 		this.directRequestProcessor = directRequestProcessor;
 	}
@@ -31,18 +25,22 @@ public abstract class ExtDirectServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		PrintWriter writer = buildResponseWriter(resp, "text/javascript", "UTF-8");
-		javascriptApiBuilder.write(getClass(), req.getRequestURI(), getClientName(), writer);
+		javascriptApiBuilder.write(getGson(), getClass(), req.getRequestURI(), getClientName(), writer);
 	}
 
 	public String getClientName() {
 		return getClass().getSimpleName();
 	}
 
+	public Gson getGson() {
+		return new Gson();
+	}
+
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		JsonElement jsonReq = new JsonParser().parse(req.getReader());
 		JsonElement jsonResp = processBatchRequest(jsonReq);
-		gson.toJson(jsonResp, buildResponseWriter(resp, "application/json", "UTF-8"));
+		getGson().toJson(jsonResp, buildResponseWriter(resp, "application/json", "UTF-8"));
 	}
 
 	private JsonElement processBatchRequest(JsonElement json) {
@@ -65,7 +63,7 @@ public abstract class ExtDirectServlet extends HttpServlet {
 		req.tid = reqJson.get("tid").getAsInt();
 		req.data = (reqJson.get("data").isJsonArray() ? reqJson.get("data").getAsJsonArray() : new JsonArray());
 
-		DirectResponse resp = directRequestProcessor.process(this, req);
+		DirectResponse resp = directRequestProcessor.process(getGson(), this, req);
 
 		JsonObject respJson = new JsonObject();
 		respJson.addProperty("action", resp.action);

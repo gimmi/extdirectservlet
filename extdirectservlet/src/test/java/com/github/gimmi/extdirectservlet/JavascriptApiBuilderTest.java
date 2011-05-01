@@ -23,14 +23,14 @@ public class JavascriptApiBuilderTest {
 	@Before
 	public void setUp() throws Exception {
 		directMethodFinder = mock(DirectMethodFinder.class);
-		target = new JavascriptApiBuilder(new Gson(), directMethodFinder);
+		target = new JavascriptApiBuilder(directMethodFinder);
 	}
 
 	@Test
 	public void should_build_api_as_expected() throws Exception {
 		Writer result = new StringWriter();
 		setupMethodStub(getClass());
-		target.write(getClass(), "http://localhost/app/rpc", "Ns.ClassName", new PrintWriter(result));
+		target.write(new Gson(), getClass(), "http://localhost/app/rpc", "Ns.ClassName", new PrintWriter(result));
 		assertEquals("Ext.ns('Ns');\nNs.ClassName = {};\nNs.ClassName.API = {'id':'Ns.ClassName','url':'http://localhost/app/rpc','type':'remoting','namespace':'Ns','actions':{'ClassName':[{'name':'sampleMethod','len':2}]}};", result.toString().replace('"', '\''));
 	}
 

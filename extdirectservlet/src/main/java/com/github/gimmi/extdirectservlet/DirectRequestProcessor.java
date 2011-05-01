@@ -10,18 +10,16 @@ import java.lang.reflect.Method;
 
 class DirectRequestProcessor {
 	private final DirectMethodFinder directMethodFinder;
-	private final Gson gson;
 
-	public DirectRequestProcessor(DirectMethodFinder directMethodFinder, Gson gson) {
+	public DirectRequestProcessor(DirectMethodFinder directMethodFinder) {
 		this.directMethodFinder = directMethodFinder;
-		this.gson = gson;
 	}
 
-	public DirectResponse process(ExtDirectServlet servlet, DirectRequest req) {
+	public DirectResponse process(Gson gson, ExtDirectServlet servlet, DirectRequest req) {
 		DirectResponse resp = new DirectResponse(req);
 		Method method = directMethodFinder.getDirectMethod(servlet.getClass(), req.method);
 		try {
-			Object[] args = getInvocationArgs(method, req.data);
+			Object[] args = getInvocationArgs(gson, method, req.data);
 			Object returnValue = method.invoke(servlet, args);
 			resp.setResult(gson.toJsonTree(returnValue, method.getReturnType()));
 		} catch (java.lang.reflect.InvocationTargetException tie) {
@@ -33,7 +31,7 @@ class DirectRequestProcessor {
 		return resp;
 	}
 
-	private Object[] getInvocationArgs(Method method, JsonArray data) {
+	private Object[] getInvocationArgs(Gson gson, Method method, JsonArray data) {
 		Class<?>[] parameterTypes = method.getParameterTypes();
 		Object[] paramValues = new Object[parameterTypes.length];
 		for (int i = 0; i < parameterTypes.length; i++) {

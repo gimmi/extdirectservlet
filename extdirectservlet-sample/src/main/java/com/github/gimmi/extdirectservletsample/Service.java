@@ -2,6 +2,7 @@ package com.github.gimmi.extdirectservletsample;
 
 import com.github.gimmi.extdirectservlet.ExtDirect;
 import com.github.gimmi.extdirectservlet.ExtDirectServlet;
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,13 +10,14 @@ import org.slf4j.LoggerFactory;
 public class Service extends ExtDirectServlet {
 	private final Logger logger = LoggerFactory.getLogger(Service.class);
 
-	public Service() {
-		super(new GsonBuilder().setPrettyPrinting().create());
-	}
-
 	@Override
 	public String getClientName() {
 		return "Ns.Service";
+	}
+
+	@Override
+	public Gson getGson() {
+		return new GsonBuilder().setPrettyPrinting().create();
 	}
 
 	public static class PrimitiveTypesEchoResult {

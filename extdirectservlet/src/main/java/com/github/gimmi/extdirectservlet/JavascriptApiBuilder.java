@@ -9,15 +9,13 @@ import java.io.PrintWriter;
 import java.lang.reflect.Method;
 
 class JavascriptApiBuilder {
-	private final Gson gson;
 	private final DirectMethodFinder directMethodFinder;
 
-	public JavascriptApiBuilder(Gson gson, DirectMethodFinder directMethodFinder) {
-		this.gson = gson;
+	public JavascriptApiBuilder(DirectMethodFinder directMethodFinder) {
 		this.directMethodFinder = directMethodFinder;
 	}
 
-	public void write(Class<?> clazz, String url, String clientName, PrintWriter writer) throws IOException {
+	public void write(Gson gson, Class<?> clazz, String url, String clientName, PrintWriter writer) throws IOException {
 		String namespace = breakName(clientName)[0];
 		String actionName = breakName(clientName)[1];
 		JsonObject api = new JsonObject();
