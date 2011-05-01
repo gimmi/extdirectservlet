@@ -1,0 +1,73 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.github.gimmi</groupId>
+	<artifactId>extdirectservlet-sample</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>war</packaging>
+	<properties>
+		<project.build.sourceEncoding>Cp1252</project.build.sourceEncoding> <!-- The most platform independent encodings is UTF-8, but currently eclipse doesn't use this encoding by default -->
+	</properties>
+	<build>
+		<plugins>
+			<plugin>
+				<!-- Version 2.1.1 cause issue http://jira.codehaus.org/browse/MWAR-248 -->
+				<groupId>org.apache.maven.plugins</groupId> 
+				<artifactId>maven-war-plugin</artifactId> 
+				<version>2.1</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.6</version>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<taskdef name="jslint" classname="com.googlecode.jslint4java.ant.JSLintTask" classpath="${settings.localRepository}/com/googlecode/jslint4java/jslint4java-ant/1.4.2/jslint4java-ant-1.4.2.jar" />
+								<jslint options="white,browser,devel,undef,eqeqeq,plusplus,bitwise,regexp,strict,newcap,immed">
+									<predef>Ext</predef>
+									<formatter type="plain" />
+									<fileset dir="${basedir}/src/main/webapp">
+										<include name="**/*.js" />
+										<exclude name="ext/**/*" />
+										<exclude name="jasmine*/**/*" />
+									</fileset>
+								</jslint>
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>com.googlecode.jslint4java</groupId>
+						<artifactId>jslint4java-ant</artifactId>
+						<version>1.4.4</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+	</build>
+	<dependencies>
+		<dependency>
+			<groupId>com.github.gimmi</groupId>
+			<artifactId>extdirectservlet</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+		<!-- PROVIDED DEPENDENCIES -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+</project>
