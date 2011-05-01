@@ -2,6 +2,7 @@ package com.github.gimmi.extdirectservlet;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -31,11 +32,12 @@ class DirectRequestProcessor {
 		return resp;
 	}
 
-	private Object[] getInvocationArgs(Gson gson, Method method, JsonArray data) {
+	Object[] getInvocationArgs(Gson gson, Method method, JsonArray data) {
 		Class<?>[] parameterTypes = method.getParameterTypes();
 		Object[] paramValues = new Object[parameterTypes.length];
 		for (int i = 0; i < parameterTypes.length; i++) {
-			paramValues[i] = gson.fromJson(data.get(i), parameterTypes[i]);
+			Class<?> type = parameterTypes[i];
+			paramValues[i] = (JsonElement.class.isAssignableFrom(type) ? data.get(i) : gson.fromJson(data.get(i), type));
 		}
 		return paramValues;
 	}
