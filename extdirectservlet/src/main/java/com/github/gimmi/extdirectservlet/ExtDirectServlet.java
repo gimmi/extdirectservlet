@@ -29,7 +29,7 @@ public abstract class ExtDirectServlet extends HttpServlet {
 	}
 
 	public String getNamespace() {
-		return getClass().getSimpleName();
+		return null;
 	}
 
 	public String getActionName(){

@@ -31,7 +31,15 @@ public class JavascriptApiBuilderTest {
 		Writer result = new StringWriter();
 		setupMethodStub(getClass());
 		target.write(new Gson(), getClass(), "http://localhost/app/rpc", "Ns", "ClassName", new PrintWriter(result));
-		assertEquals("Ext.ns('Ns');\nNs.API = {'id':'Ns','url':'http://localhost/app/rpc','type':'remoting','namespace':'Ns','actions':{'ClassName':[{'name':'sampleMethod','len':2}]}};", result.toString().replace('"', '\''));
+		assertEquals("Ext.ns('Ns');\nNs.REMOTING_API = {'id':'Ns','url':'http://localhost/app/rpc','type':'remoting','namespace':'Ns','actions':{'ClassName':[{'name':'sampleMethod','len':2}]}};", result.toString().replace('"', '\''));
+	}
+
+	@Test
+	public void should_build_api_as_expected_without_namespace() throws Exception {
+		Writer result = new StringWriter();
+		setupMethodStub(getClass());
+		target.write(new Gson(), getClass(), "http://localhost/app/rpc", null, "ClassName", new PrintWriter(result));
+		assertEquals("Ext.ns('Ext.app');\nExt.app.REMOTING_API = {'url':'http://localhost/app/rpc','type':'remoting','actions':{'ClassName':[{'name':'sampleMethod','len':2}]}};", result.toString().replace('"', '\''));
 	}
 
 	@Test

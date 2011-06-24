@@ -11,7 +11,7 @@
 		Ext.require('Ext.direct.*');
 
 		Ext.onReady(function() {
-			Ext.direct.Manager.addProvider(Ns.API);
+			Ext.direct.Manager.addProvider(Ns.REMOTING_API);
 			jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
 			jasmine.getEnv().execute();
 		});
