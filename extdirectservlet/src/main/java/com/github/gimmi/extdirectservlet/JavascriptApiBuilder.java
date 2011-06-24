@@ -36,7 +36,7 @@ class JavascriptApiBuilder {
 			methods.add(obj);
 		}
 		actions.add(actionName, methods);
-		writer.format("Ext.ns('%s');\n%s = {};\n%s.API = ", namespace, clientName, clientName);
+		writer.format("Ext.ns('%s');\n%s.API = ", clientName, clientName);
 		gson.toJson(api, writer);
 		writer.write(";");
 	}

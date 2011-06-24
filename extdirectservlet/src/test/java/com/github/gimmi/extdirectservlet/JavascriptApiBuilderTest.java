@@ -31,7 +31,7 @@ public class JavascriptApiBuilderTest {
 		Writer result = new StringWriter();
 		setupMethodStub(getClass());
 		target.write(new Gson(), getClass(), "http://localhost/app/rpc", "Ns.ClassName", new PrintWriter(result));
-		assertEquals("Ext.ns('Ns');\nNs.ClassName = {};\nNs.ClassName.API = {'id':'Ns.ClassName','url':'http://localhost/app/rpc','type':'remoting','namespace':'Ns','actions':{'ClassName':[{'name':'sampleMethod','len':2}]}};", result.toString().replace('"', '\''));
+		assertEquals("Ext.ns('Ns.ClassName');\nNs.ClassName.API = {'id':'Ns.ClassName','url':'http://localhost/app/rpc','type':'remoting','namespace':'Ns','actions':{'ClassName':[{'name':'sampleMethod','len':2}]}};", result.toString().replace('"', '\''));
 	}
 
 	@Test
