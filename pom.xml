@@ -6,7 +6,7 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>extdirectservlet</module>
-		<module>extdirectservlet-sample</module>
+		<module>extdirectservlet-test</module>
 	</modules>
 	<dependencies>
 	</dependencies>

@@ -4,5 +4,3 @@
 /.settings/
 # Intellij Idea
 /*.iml
-# extjs
-/src/main/webapp/ext

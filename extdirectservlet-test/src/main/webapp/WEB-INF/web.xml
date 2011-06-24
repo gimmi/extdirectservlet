@@ -5,7 +5,7 @@
 	</welcome-file-list>
 	<servlet>
 		<servlet-name>extdirect</servlet-name>
-		<servlet-class>com.github.gimmi.extdirectservletsample.Service</servlet-class>
+		<servlet-class>com.github.gimmi.extdirectservlettest.Service</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>extdirect</servlet-name>

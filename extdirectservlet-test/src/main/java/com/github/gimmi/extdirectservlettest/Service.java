@@ -1,4 +1,4 @@
-package com.github.gimmi.extdirectservletsample;
+package com.github.gimmi.extdirectservlettest;
 
 import com.github.gimmi.extdirectservlet.ExtDirect;
 import com.github.gimmi.extdirectservlet.ExtDirectServlet;
