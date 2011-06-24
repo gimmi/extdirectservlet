@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class ExtDirectServlet extends HttpServlet {
 	private final JavascriptApiBuilder javascriptApiBuilder;
@@ -34,6 +36,10 @@ public abstract class ExtDirectServlet extends HttpServlet {
 
 	public Gson getGson() {
 		return new Gson();
+	}
+
+	private Object getActionInstance(String action) {
+		return this;
 	}
 
 	@Override
@@ -63,7 +69,7 @@ public abstract class ExtDirectServlet extends HttpServlet {
 		req.tid = reqJson.get("tid").getAsInt();
 		req.data = (reqJson.get("data").isJsonArray() ? reqJson.get("data").getAsJsonArray() : new JsonArray());
 
-		DirectResponse resp = directRequestProcessor.process(getGson(), this, req);
+		DirectResponse resp = directRequestProcessor.process(getGson(), getActionInstance(req.action), req);
 
 		JsonObject respJson = new JsonObject();
 		respJson.addProperty("action", resp.action);

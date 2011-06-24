@@ -16,12 +16,12 @@ class DirectRequestProcessor {
 		this.directMethodFinder = directMethodFinder;
 	}
 
-	public DirectResponse process(Gson gson, ExtDirectServlet servlet, DirectRequest req) {
+	public DirectResponse process(Gson gson, Object actionInstance, DirectRequest req) {
 		DirectResponse resp = new DirectResponse(req);
-		Method method = directMethodFinder.getDirectMethod(servlet.getClass(), req.method);
+		Method method = directMethodFinder.getDirectMethod(actionInstance.getClass(), req.method);
 		try {
 			Object[] args = getInvocationArgs(gson, method, req.data);
-			Object returnValue = method.invoke(servlet, args);
+			Object returnValue = method.invoke(actionInstance, args);
 			resp.setResult(gson.toJsonTree(returnValue, method.getReturnType()));
 		} catch (java.lang.reflect.InvocationTargetException tie) {
 			Throwable e = tie.getCause();
