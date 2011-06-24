@@ -11,8 +11,8 @@ public class Service extends ExtDirectServlet {
 	private final Logger logger = LoggerFactory.getLogger(Service.class);
 
 	@Override
-	public String getClientName() {
-		return "Ns.Service";
+	public String getNamespace() {
+		return "Ns";
 	}
 
 	@Override

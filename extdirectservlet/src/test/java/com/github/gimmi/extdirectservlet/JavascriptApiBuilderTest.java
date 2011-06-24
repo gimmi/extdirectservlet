@@ -30,8 +30,8 @@ public class JavascriptApiBuilderTest {
 	public void should_build_api_as_expected() throws Exception {
 		Writer result = new StringWriter();
 		setupMethodStub(getClass());
-		target.write(new Gson(), getClass(), "http://localhost/app/rpc", "Ns.ClassName", new PrintWriter(result));
-		assertEquals("Ext.ns('Ns.ClassName');\nNs.ClassName.API = {'id':'Ns.ClassName','url':'http://localhost/app/rpc','type':'remoting','namespace':'Ns','actions':{'ClassName':[{'name':'sampleMethod','len':2}]}};", result.toString().replace('"', '\''));
+		target.write(new Gson(), getClass(), "http://localhost/app/rpc", "Ns", "ClassName", new PrintWriter(result));
+		assertEquals("Ext.ns('Ns');\nNs.API = {'id':'Ns','url':'http://localhost/app/rpc','type':'remoting','namespace':'Ns','actions':{'ClassName':[{'name':'sampleMethod','len':2}]}};", result.toString().replace('"', '\''));
 	}
 
 	@Test

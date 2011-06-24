@@ -8,8 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Map;
 
 public abstract class ExtDirectServlet extends HttpServlet {
 	private final JavascriptApiBuilder javascriptApiBuilder;
@@ -27,10 +25,14 @@ public abstract class ExtDirectServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		PrintWriter writer = buildResponseWriter(resp, "text/javascript", "UTF-8");
-		javascriptApiBuilder.write(getGson(), getClass(), req.getRequestURI(), getClientName(), writer);
+		javascriptApiBuilder.write(getGson(), getClass(), req.getRequestURI(), getNamespace(), getActionName(), writer);
 	}
 
-	public String getClientName() {
+	public String getNamespace() {
+		return getClass().getSimpleName();
+	}
+
+	public String getActionName(){
 		return getClass().getSimpleName();
 	}
 

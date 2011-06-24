@@ -11,7 +11,7 @@
 		Ext.require('Ext.direct.*');
 
 		Ext.onReady(function() {
-			Ext.direct.Manager.addProvider(Ns.Service.API);
+			Ext.direct.Manager.addProvider(Ns.API);
 			jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
 			jasmine.getEnv().execute();
 		});

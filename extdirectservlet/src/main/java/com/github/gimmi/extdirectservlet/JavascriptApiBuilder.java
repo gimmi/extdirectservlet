@@ -15,14 +15,12 @@ class JavascriptApiBuilder {
 		this.directMethodFinder = directMethodFinder;
 	}
 
-	public void write(Gson gson, Class<?> clazz, String url, String clientName, PrintWriter writer) throws IOException {
-		String namespace = breakName(clientName)[0];
-		String actionName = breakName(clientName)[1];
+	public void write(Gson gson, Class<?> clazz, String url, String namespace, String actionName, PrintWriter writer) throws IOException {
 		JsonObject api = new JsonObject();
 		// Setting id property is useful for getting provider reference, for example:
 		// var provider = Ext.direct.Manager.getProvider('Namespace.ActionName')
 		// provider.on('exception', function(){ alert('provider exception'); });
-		api.addProperty("id", clientName);
+		api.addProperty("id", namespace);
 		api.addProperty("url", url);
 		api.addProperty("type", "remoting");
 		api.addProperty("namespace", namespace);
@@ -36,7 +34,7 @@ class JavascriptApiBuilder {
 			methods.add(obj);
 		}
 		actions.add(actionName, methods);
-		writer.format("Ext.ns('%s');\n%s.API = ", clientName, clientName);
+		writer.format("Ext.ns('%s');\n%s.API = ", namespace, namespace);
 		gson.toJson(api, writer);
 		writer.write(";");
 	}
