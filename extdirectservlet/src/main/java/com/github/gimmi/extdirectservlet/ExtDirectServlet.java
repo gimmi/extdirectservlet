@@ -25,23 +25,11 @@ public abstract class ExtDirectServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		PrintWriter writer = buildResponseWriter(resp, "text/javascript", "UTF-8");
-		javascriptApiBuilder.write(getGson(), getClass(), req.getRequestURI(), getNamespace(), getActionName(), writer);
-	}
-
-	public String getNamespace() {
-		return null;
-	}
-
-	public String getActionName(){
-		return getClass().getSimpleName();
+		javascriptApiBuilder.write(getGson(), getClass(), req.getRequestURI(), req.getParameter("name"), writer);
 	}
 
 	public Gson getGson() {
 		return new Gson();
-	}
-
-	private Object getActionInstance(String action) {
-		return this;
 	}
 
 	@Override
@@ -71,7 +59,7 @@ public abstract class ExtDirectServlet extends HttpServlet {
 		req.tid = reqJson.get("tid").getAsInt();
 		req.data = (reqJson.get("data").isJsonArray() ? reqJson.get("data").getAsJsonArray() : new JsonArray());
 
-		DirectResponse resp = directRequestProcessor.process(getGson(), getActionInstance(req.action), req);
+		DirectResponse resp = directRequestProcessor.process(getGson(), this, req);
 
 		JsonObject respJson = new JsonObject();
 		respJson.addProperty("action", resp.action);

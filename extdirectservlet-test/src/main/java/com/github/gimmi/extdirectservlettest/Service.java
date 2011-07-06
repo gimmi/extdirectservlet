@@ -11,11 +11,6 @@ public class Service extends ExtDirectServlet {
 	private final Logger logger = LoggerFactory.getLogger(Service.class);
 
 	@Override
-	public String getNamespace() {
-		return "Ns";
-	}
-
-	@Override
 	public Gson getGson() {
 		return new GsonBuilder().setPrettyPrinting().create();
 	}
